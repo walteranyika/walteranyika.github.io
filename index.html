@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Point End Dashboard</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="assets/vendor/linearicons/style.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<!-- 	<link rel="stylesheet" href="assets/css/demo.css"> -->
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
+</head>
+
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href="index.html"><img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+
+				<div class="navbar-btn">
+					<button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+				</div>
+				<form class="navbar-form navbar-left">
+					<div class="input-group">
+						<input type="text" value="" class="form-control" placeholder="Search Items...">
+						<span class="input-group-btn"><button type="button" class="btn btn-primary">Search Items</button></span>
+					</div>
+				</form>	
+				
+				<div id="navbar-menu">
+					<ul class="nav navbar-nav navbar-right">
+<!-- 						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span>User</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
+								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
+								<li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
+								<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
+							</ul>
+						</li> -->
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+					<ul class="nav">
+						<li><a href="index.html" class="active"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
+						<li><a href="data.php" class=""><i class="lnr lnr-code"></i> <span>Data</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-chart-bars"></i> <span>Charts</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-cog"></i> <span>Panels</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-dice"></i> <span>Tables</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-text-format"></i> <span>Typography</span></a></li>
+						<li><a href="#" class=""><i class="lnr lnr-linearicons"></i> <span>Icons</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!-- OVERVIEW -->
+					<div class="panel panel-headline">
+                         <!-- MAPS GO HERE -->
+	               
+					
+					</div>
+						
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<footer>
+			<div class="container-fluid">
+				<p class="copyright">&copy; 2017 <a href="#" target="_blank">Soloft Inc</a>. All Rights Reserved.</p>
+			</div>
+		</footer>
+	</div>
+	<!-- END WRAPPER -->
+	<!-- Javascript -->
+	 <script>
+      var customLabel = {
+        restaurant: {
+          label: 'R'
+        },
+        bar: {
+          label: 'B'
+        }
+      };
+
+      var markers=[];
+      var map;
+		function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+		  center: new google.maps.LatLng(-1.28333 , 36.81667),
+		  zoom: 12
+		});
+
+		var infoWindow = new google.maps.InfoWindow;
+
+		  // Change this depending on the name of your PHP or XML file
+		  downloadUrl('locations.php', function(data) {
+		    var xml = data.responseXML;
+		    console.log(xml);
+		    markers = xml.documentElement.getElementsByTagName('marker');
+		    Array.prototype.forEach.call(markers, function(markerElem) {
+		      var id = markerElem.getAttribute('id');
+		      var name = markerElem.getAttribute('name');
+		      var address = markerElem.getAttribute('address')+"\n"+markerElem.getAttribute('type');
+		      var type = markerElem.getAttribute('type');
+		      var point = new google.maps.LatLng(parseFloat(markerElem.getAttribute('lat')), parseFloat(markerElem.getAttribute('lng')));
+
+		      var infowincontent = document.createElement('div');
+		      var strong = document.createElement('strong');
+		      strong.textContent = name
+		      infowincontent.appendChild(strong);
+		      infowincontent.appendChild(document.createElement('br'));
+
+		      var text = document.createElement('text');
+		      text.textContent = address
+		      infowincontent.appendChild(text);
+		      var icon = customLabel[type] || {};
+		      var marker = new google.maps.Marker({
+		        map: map,
+		        position: point,
+		        label: icon.label
+		      });
+		      marker.addListener('click', function() {
+		        infoWindow.setContent(infowincontent);
+		        infoWindow.open(map, marker);
+		      });
+		    });//end for each
+
+		  });
+		}
+
+     //END update position
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+        request.onreadystatechange = function() {
+          if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+          }
+        };
+
+        request.open('GET', url, true);
+        request.send(null);
+      }
+
+      function doNothing() {}
+    </script>
+	<script src="assets/vendor/jquery/jquery.min.js"></script>
+	<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="assets/scripts/klorofil-common.js"></script>
+    <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6XzernrWoNjPlr0_o3SqvK5btRa39Ajo&callback=initMap">
+    </script>
+</body>
+
+</html>
